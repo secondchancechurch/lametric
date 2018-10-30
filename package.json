@@ -1,0 +1,23 @@
+{
+  "name": "second-chance-salvations",
+  "version": "0.0.0",
+  "description": "lametric second chance salvations app",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "envc": "^2.5.0",
+    "exists": "^1.0.1",
+    "micro": "^9.3.2",
+    "nodemon": "^1.18.5",
+    "normalize-slashes": "^1.0.1"
+  },
+  "devDependencies": {
+    "prettier": "^1.14.2"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js"
+  },
+  "author": "Edolyne Long",
+  "license": "MIT"
+}
