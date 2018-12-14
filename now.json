@@ -1,6 +1,7 @@
 {
   "name": "secondchance-salvations",
   "public": false,
+  "version": 1,
   "scale": {
     "sfo1": {
       "min": 1,
@@ -9,7 +10,8 @@
   },
   "env": {
     "SALVATIONS_ENDPOINT": "@sc-salvations-endpoint",
-    "ROCK_AUTH_TOKEN": "@sc-auth-token"
+    "CM_AUTH_TOKEN": "@sc-auth-token",
+    "CM_AUTH_USER": "@sc-auth-user"
   },
   "alias": [
     "salvations.mysecondchancechurch.com"

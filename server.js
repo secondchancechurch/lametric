@@ -4,19 +4,28 @@ const axios = require('axios')
 const server = micro(async (req, res) => {
   let body
   let statusCode
+  let totalSalvations = 0
+
   const salvations = await axios.get(
     process.env.SALVATIONS_ENDPOINT,
     {
       headers: {
-        'Authorization-Token': process.env.ROCK_AUTH_TOKEN
+        'X-Auth-User': process.env.CM_AUTH_USER,
+        'X-Auth-Key': process.env.CM_AUTH_TOKEN
       }
     }
   )
     .then(function (response) {
-      if (response.data && response.data.length) return response.data[0].YValueTotal;
+      console.log(response.data);
+      if (response.data && response.data.length) {
+        response.data.map((week) => {
+          totalSalvations = totalSalvations + week.value
+        })
+      };
       return 0;
     })
     .catch(function (error) {
+      console.log(error);
       statusCode = 500;
       body = { error: 'unknown' };
     });
@@ -24,7 +33,7 @@ const server = micro(async (req, res) => {
   body = {
     frames: [
       {
-        text: `${salvations}`,
+        text: `${totalSalvations}`,
         icon: 'i23983'
       }
     ]
