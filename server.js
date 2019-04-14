@@ -20,7 +20,6 @@ const server = micro(async (req, res) => {
         response.data.map((week) => {
           totalSalvations = totalSalvations + week.value
         })}
-
       return 0;
     })
     .then(function (response) {
