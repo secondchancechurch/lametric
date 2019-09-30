@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/salvationsAPI.iml" filepath="$PROJECT_DIR$/.idea/salvationsAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/netlifySalvations.iml" filepath="$PROJECT_DIR$/.idea/netlifySalvations.iml" />
     </modules>
   </component>
 </project>
