@@ -44,6 +44,20 @@ export async function handler(event, context) {
       }
     })
 
+    const salvationResponse3 = await axios.get(
+      process.env.SALVATIONS_ENDPOINT + '&page=2',
+      {
+        headers: {
+          'X-Auth-User': process.env.CM_AUTH_USER,
+          'X-Auth-Key': process.env.CM_AUTH_TOKEN
+        }
+      }
+    ).then(response => {
+      if (response.data && response.data.length) {
+        salvationResponse.push(...response.data)
+      }
+    })
+
     salvationResponse.map((week) => {
       totalSalvations = totalSalvations + week.value
     })
