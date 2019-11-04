@@ -45,7 +45,7 @@ export async function handler(event, context) {
     })
 
     const salvationResponse3 = await axios.get(
-      process.env.SALVATIONS_ENDPOINT + '&page=2',
+      process.env.SALVATIONS_ENDPOINT + '&page=3',
       {
         headers: {
           'X-Auth-User': process.env.CM_AUTH_USER,
