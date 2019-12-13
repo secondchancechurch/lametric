@@ -11,6 +11,6 @@
   from = "/"
   to = "/.netlify/functions/salvations"
 
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/salvations"
+#[[redirects]]
+#  from = "/*"
+#  to = "/.netlify/functions/salvations"
