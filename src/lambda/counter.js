@@ -4,6 +4,7 @@ import thousands from "thousands"
 
 require('dotenv').config()
 
+const salvationCategory = 414277
 const baptismCategory = 475846
 const attendanceCategory = 414275
 
@@ -13,8 +14,12 @@ export async function handler(event, context) {
 
   try {
     let salvationResponse = []
+    let baptismResponse = []
+
+    const salvationEndpoint = `${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}`
+
     const salvationResponse1 = await axios.get(
-      process.env.SALVATIONS_ENDPOINT,
+      salvationEndpoint,
       {
         headers: {
           'X-Auth-User': process.env.CM_AUTH_USER,
@@ -26,7 +31,7 @@ export async function handler(event, context) {
     })
 
     const salvationResponse2 = await axios.get(
-      process.env.SALVATIONS_ENDPOINT + '&page=2',
+      salvationEndpoint + '&page=2',
       {
         headers: {
           'X-Auth-User': process.env.CM_AUTH_USER,
@@ -40,7 +45,7 @@ export async function handler(event, context) {
     })
 
     const salvationResponse3 = await axios.get(
-      process.env.SALVATIONS_ENDPOINT + '&page=3',
+      salvationEndpoint + '&page=3',
       {
         headers: {
           'X-Auth-User': process.env.CM_AUTH_USER,
@@ -57,6 +62,25 @@ export async function handler(event, context) {
       totalSalvations = totalSalvations + week.value
     })
 
+    const baptismResponse1 = await axios.get(
+        `${process.env.SALVATIONS_ENDPOINT}&category_id=${baptismCategory}`,
+        {
+          headers: {
+            'X-Auth-User': process.env.CM_AUTH_USER,
+            'X-Auth-Key': process.env.CM_AUTH_TOKEN
+          }
+        }
+    ).then(response => {
+      if (response.data && response.data.length) {
+        baptismResponse.push(...response.data)
+      }
+    })
+
+    baptismResponse.map((week) => {
+      totalBaptisms = totalBaptisms + week.value
+    })
+
+    // text: '16',
     return {
       statusCode: 200,
       body: JSON.stringify({ frames: [
@@ -64,7 +88,7 @@ export async function handler(event, context) {
             text: `${totalSalvations}`,
             icon: 'i23983'
           },{
-            text: '16',
+            text: `${totalBaptisms}`,
             icon: 'a24116'
           }
         ]
