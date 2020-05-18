@@ -8,6 +8,27 @@ const salvationCategory = 414277
 const baptismCategory = 475846
 const attendanceCategory = 414275
 
+const getPaginatedResults = (page, data = []) => {
+  const baseEndpoint = `${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}&page=${page}`
+  return axios.get(baseEndpoint,
+    {
+      headers: {
+        'X-Auth-User': process.env.CM_AUTH_USER,
+        'X-Auth-Key': process.env.CM_AUTH_TOKEN
+      }
+    }
+    )
+    .then(response => {
+      data.push(...response.data)
+
+      if (!response.data.length) {
+        return data
+      }
+
+      return getPaginatedResults(page + 1, data)
+    })
+}
+
 export async function handler(event, context) {
   let totalSalvations = 0
   let totalBaptisms = 0
@@ -18,50 +39,8 @@ export async function handler(event, context) {
   let momentDate = moment().startOf('week').format('YYYY-MM-DD')
 
   try {
-    let salvationResponse = []
+    let salvationResponse =  await getPaginatedResults(1)
     let baptismResponse = []
-
-    const salvationEndpoint = `${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}`
-
-    const salvationResponse1 = await axios.get(
-      salvationEndpoint,
-      {
-        headers: {
-          'X-Auth-User': process.env.CM_AUTH_USER,
-          'X-Auth-Key': process.env.CM_AUTH_TOKEN
-        }
-      }
-    ).then(response => {
-      salvationResponse.push(...response.data)
-    })
-
-    const salvationResponse2 = await axios.get(
-        salvationEndpoint + '&page=2',
-      {
-        headers: {
-          'X-Auth-User': process.env.CM_AUTH_USER,
-          'X-Auth-Key': process.env.CM_AUTH_TOKEN
-        }
-      }
-    ).then(response => {
-      if (response.data && response.data.length) {
-        salvationResponse.push(...response.data)
-      }
-    })
-
-    const salvationResponse3 = await axios.get(
-        salvationEndpoint + '&page=3',
-      {
-        headers: {
-          'X-Auth-User': process.env.CM_AUTH_USER,
-          'X-Auth-Key': process.env.CM_AUTH_TOKEN
-        }
-      }
-    ).then(response => {
-      if (response.data && response.data.length) {
-        salvationResponse.push(...response.data)
-      }
-    })
 
     salvationResponse.map((week) => {
       totalSalvations = totalSalvations + week.value
