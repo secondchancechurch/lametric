@@ -23,7 +23,7 @@ const getPaginatedResults = (endpoint, page, data = []) => {
         return data
       }
 
-      return getPaginatedResults(page + 1, data)
+      return getPaginatedResults(endpoint, page + 1, data)
     })
 }
 
