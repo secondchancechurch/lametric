@@ -1,12 +1,9 @@
 import axios from "axios"
-import moment from "moment"
-import thousands from "thousands"
 
 require('dotenv').config()
 
 const salvationCategory = 414277
 const baptismCategory = 475846
-const attendanceCategory = 414275
 
 const getPaginatedResults = (endpoint, page, data = []) => {
   // const baseEndpoint = `${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}&page=${page}`
@@ -35,8 +32,8 @@ export async function handler(event, context) {
   let totalBaptisms = 0
 
   try {
-    const salvationResponse = await getPaginatedResults(`${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}&page=${page}`, 1)
-    const baptismResponse = await getPaginatedResults(`${process.env.SALVATIONS_ENDPOINT}&category_id=${baptismCategory}&page=${page}`, 1)
+    const salvationResponse = await getPaginatedResults(`${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}`, 1)
+    const baptismResponse = await getPaginatedResults(`${process.env.SALVATIONS_ENDPOINT}&category_id=${baptismCategory}`, 1)
 
     salvationResponse.map((week) => {
       totalSalvations = totalSalvations + week.value
