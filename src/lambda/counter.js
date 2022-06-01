@@ -8,8 +8,9 @@ const salvationCategory = 414277
 const baptismCategory = 475846
 const attendanceCategory = 414275
 
-const getPaginatedResults = (page, data = []) => {
-  const baseEndpoint = `${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}&page=${page}`
+const getPaginatedResults = (endpoint, page, data = []) => {
+  // const baseEndpoint = `${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}&page=${page}`
+  const baseEndpoint = `${endpoint}&page=${page}`
   return axios.get(baseEndpoint,
     {
       headers: {
@@ -34,26 +35,26 @@ export async function handler(event, context) {
   let totalBaptisms = 0
 
   try {
-    const salvationResponse = await getPaginatedResults(1)
-    let baptismResponse = []
+    const salvationResponse = await getPaginatedResults(`${process.env.SALVATIONS_ENDPOINT}&category_id=${salvationCategory}&page=${page}`, 1)
+    const baptismResponse = await getPaginatedResults(`${process.env.SALVATIONS_ENDPOINT}&category_id=${baptismCategory}&page=${page}`, 1)
 
     salvationResponse.map((week) => {
       totalSalvations = totalSalvations + week.value
     })
 
-    const baptismResponse1 = await axios.get(
-        `${process.env.SALVATIONS_ENDPOINT}&category_id=${baptismCategory}`,
-        {
-          headers: {
-            'X-Auth-User': process.env.CM_AUTH_USER,
-            'X-Auth-Key': process.env.CM_AUTH_TOKEN
-          }
-        }
-    ).then(response => {
-      if (response.data && response.data.length) {
-        baptismResponse.push(...response.data)
-      }
-    })
+    // const baptismResponse1 = await axios.get(
+    //     `${process.env.SALVATIONS_ENDPOINT}&category_id=${baptismCategory}`,
+    //     {
+    //       headers: {
+    //         'X-Auth-User': process.env.CM_AUTH_USER,
+    //         'X-Auth-Key': process.env.CM_AUTH_TOKEN
+    //       }
+    //     }
+    // ).then(response => {
+    //   if (response.data && response.data.length) {
+    //     baptismResponse.push(...response.data)
+    //   }
+    // })
 
     baptismResponse.map((week) => {
       totalBaptisms = totalBaptisms + week.value
